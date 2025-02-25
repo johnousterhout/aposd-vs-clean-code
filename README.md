@@ -2040,7 +2040,7 @@ to prevent the disaster scenarios; I don't even see a clear
 recognition of the risk.
 
 Overall, TDD is in a bad place on the risk-reward spectrum. In comparison
-to the bundling approch, the downside risks for poor code quality in TDD
+to the bundling approach, the downside risks for poor code quality in TDD
 are huge, and I don't see enough upside reward (if any) to compensate.
 
 **UB:**
