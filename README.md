@@ -1479,7 +1479,7 @@ who have a more positive view of comments in general, and get
 their input. As long as the comment is not misleading and at least a few
 people found it helpful, I would retain it.
 
-Now let me me discuss two few specific comments that you objected to. The
+Now let me discuss two few specific comments that you objected to. The
 first comment was the one for the `multiples` variable:
 
 	// Used to test efficiently (without division) whether a candidate
