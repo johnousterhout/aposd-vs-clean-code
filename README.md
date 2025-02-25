@@ -1768,7 +1768,7 @@ alternative to TDD.
 
 The approach I prefer is one where the developer works in somewhat
 larger units than in TDD, perhaps a few methods or a class. The developer
-first writes some code (anwywhere from a few tens of lines to a few hundred
+first writes some code (anywhere from a few tens of lines to a few hundred
 lines), then writes unit tests for that code. As with TDD, the
 code isn't considered to be "working" until it has comprehensive unit
 tests.
