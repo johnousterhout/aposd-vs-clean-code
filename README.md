@@ -1479,7 +1479,7 @@ who have a more positive view of comments in general, and get
 their input. As long as the comment is not misleading and at least a few
 people found it helpful, I would retain it.
 
-Now let me me discuss two few specific comments that you objected to. The
+Now let me discuss two few specific comments that you objected to. The
 first comment was the one for the `multiples` variable:
 
 	// Used to test efficiently (without division) whether a candidate
@@ -1733,7 +1733,7 @@ As I said at the start I have carefully read _A Philosophy of Software Design_. 
 
 So I was surprised to find, on page 157, that you wrote a very short, dismissive, pejorative, and inaccurate section on _Test Driven Development_.  Sorry for all the adjectives, but I think that's a fair characterization.  So my goal, here, is to correct the misconceptions that led you to write the following:
 
->"Test-driven development is an approach to software development where programmers write unit tests before they write code.  When creating a new class, the develper first writes unit tests for the class, based on its expected behavior.  None of these tests pass, since there is no code for the class.  Then the developer works through the tests one at a time, writing enough code for that test to pass.  When all of the tests pass, the class is finished."
+>"Test-driven development is an approach to software development where programmers write unit tests before they write code.  When creating a new class, the developer first writes unit tests for the class, based on its expected behavior.  None of these tests pass, since there is no code for the class.  Then the developer works through the tests one at a time, writing enough code for that test to pass.  When all of the tests pass, the class is finished."
 
 This is just wrong.  TDD is quite considerably different from what you describe.  I describe it using three laws.
 
@@ -1768,7 +1768,7 @@ alternative to TDD.
 
 The approach I prefer is one where the developer works in somewhat
 larger units than in TDD, perhaps a few methods or a class. The developer
-first writes some code (anwywhere from a few tens of lines to a few hundred
+first writes some code (anywhere from a few tens of lines to a few hundred
 lines), then writes unit tests for that code. As with TDD, the
 code isn't considered to be "working" until it has comprehensive unit
 tests.
@@ -2040,7 +2040,7 @@ to prevent the disaster scenarios; I don't even see a clear
 recognition of the risk.
 
 Overall, TDD is in a bad place on the risk-reward spectrum. In comparison
-to the bundling approch, the downside risks for poor code quality in TDD
+to the bundling approach, the downside risks for poor code quality in TDD
 are huge, and I don't see enough upside reward (if any) to compensate.
 
 **UB:**
