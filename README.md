@@ -126,7 +126,9 @@ is possible, how do you recognize when it has occurred?
 
 It is certainly possible to over-decompose code.  Here's an example:
 
-	void doSomething() {doTheThing()} // over-decomposed.
+```java
+void doSomething() {doTheThing()} // over-decomposed.
+```
 
 The strategy that I use for deciding how far to take decomposition is the old rule that a method should do "*One Thing*".  If I can *meaningfully* extract one method from another, then the original method did more than one thing.  "Meaningfully" means that the extracted functionality can be given a descriptive name; and that it does less than the original method.
 
@@ -144,11 +146,13 @@ Unfortunately the One Thing approach will lead to over-decompositon:
 
 Let me tackle the last thing first.  You suggested that locking the thread, and preforming a critical section should be together in the same method.  However, I would be tempted to separate the locking from the critical section.
 
-	void concurrentOperation() {
-		lock()
-		criticalSection();
-		unlock()
-	}
+```java
+void concurrentOperation() {
+    lock()
+    criticalSection();
+    unlock()
+}
+```
 
 This decouples the critical section from the lock and allows it to be called at times when locking isn't necessary (e.g. in single thread mode) or when the a lock has already been set by someone else.
 
@@ -156,27 +160,33 @@ Now, on to the "ease of abuse" argument.  I don't consider that to be a signific
 
 So when faced with this snippet of code in a larger method:
 
-	...
-	amountOwed=0;
-	totalPoints=0;
-	...
+```java
+...
+amountOwed=0;
+totalPoints=0;
+...
+```
 
 It would be poor judgement to extract them as follows, because the extraction is not meaningful.  The implementation is not more deeply detailed than the interface.
 
-	void clearAmountOwed() {
-	  amountOwed=0;
-	}
+```java
+void clearAmountOwed() {
+    amountOwed=0;
+}
 
-	void clearTotalPoints() {
-	  totalPoints=0;
-	}
+void clearTotalPoints() {
+  totalPoints=0;
+}
+```
 
 However it may be good judgement to extract them as follows because the interface is abstract, and the implemention has deeper detail.
 
-	void clearTotals() {
-		amountOwed=0;
-		totalPoints=0;
-	}
+```java
+void clearTotals() {
+    amountOwed=0;
+    totalPoints=0;
+}
+```
 
 The latter has a nice descriptive name that is abstract enough to be meaningful without being redundant.  And the two lines together are strongly related so as to qualify for doing _one thing_: initialization.
 
@@ -227,18 +237,22 @@ Coming back to your `clearTotals` example:
 
 I hope you agree that between these two examples, the former is a bit better.
 
-	public String makeStatement() {
-	  clearTotals();
-	  return makeHeader() + makeRentalDetails() + makeFooter();
-	}
+```java
+public String makeStatement() {
+    clearTotals();
+    return makeHeader() + makeRentalDetails() + makeFooter();
+}
+```
 
 ---
 
-	public String makeStatement() {
-      amountOwed=0;
-      totalPoints=0;
-      return makeHeader() + makeRentalDetails() + makeFooter();
-	}
+```java
+public String makeStatement() {
+    amountOwed=0;
+    totalPoints=0;
+    return makeHeader() + makeRentalDetails() + makeFooter();
+}
+```
 
 **JOHN:**
 
@@ -256,76 +270,71 @@ a nontrivial code example. Let's look at the `PrimeGenerator` class from
 *Clean Code*, which is Listing 10-8 on pages 145-146. This Java class
 generates the first N prime numbers:
 
-	package literatePrimes;
+```java
+package literatePrimes;
 
-	import java.util.ArrayList;
+import java.util.ArrayList;
 
-	public class PrimeGenerator {
-	  private static int[] primes;
-	  private static ArrayList<Integer> multiplesOfPrimeFactors;
-
-	  protected static int[] generate(int n) {
-	    primes = new int[n];
-	    multiplesOfPrimeFactors = new ArrayList<Integer>();
-	    set2AsFirstPrime();
-	    checkOddNumbersForSubsequentPrimes();
-	    return primes;
-	  }
-
-	  private static void set2AsFirstPrime() {
-	    primes[0] = 2;
-	    multiplesOfPrimeFactors.add(2);
-	  }
-
-	  private static void checkOddNumbersForSubsequentPrimes() {
-	    int primeIndex = 1;
-	    for (int candidate = 3;
-	         primeIndex < primes.length;
-	         candidate += 2) {
-	      if (isPrime(candidate))
-	        primes[primeIndex++] = candidate;
-	    }
-	  }
-
-	  private static boolean isPrime(int candidate) {
-	    if (isLeastRelevantMultipleOfLargerPrimeFactor(candidate)) {
-	      multiplesOfPrimeFactors.add(candidate);
-	      return false;
-	    }
-	    return isNotMultipleOfAnyPreviousPrimeFactor(candidate);
-	  }
-
-	  private static boolean
-	  isLeastRelevantMultipleOfLargerPrimeFactor(int candidate) {
-	    int nextLargerPrimeFactor = primes[multiplesOfPrimeFactors.size()];
-	    int leastRelevantMultiple = nextLargerPrimeFactor * nextLargerPrimeFactor;
-	    return candidate == leastRelevantMultiple;
-	  }
-
-	  private static boolean
-	  isNotMultipleOfAnyPreviousPrimeFactor(int candidate) {
-	    for (int n = 1; n < multiplesOfPrimeFactors.size(); n++) {
-	      if (isMultipleOfNthPrimeFactor(candidate, n))
-	        return false;
-	    }
-	    return true;
-	  }
-
-	  private static boolean
-	  isMultipleOfNthPrimeFactor(int candidate, int n) {
-	    return candidate ==
-	      smallestOddNthMultipleNotLessThanCandidate(candidate, n);
-	  }
-
-	  private static int
-	  smallestOddNthMultipleNotLessThanCandidate(int candidate, int n) {
-	    int multiple = multiplesOfPrimeFactors.get(n);
-	    while (multiple < candidate)
-	      multiple += 2 * primes[n];
-	    multiplesOfPrimeFactors.set(n, multiple);
-	    return multiple;
-	  }
-	}
+public class PrimeGenerator {
+    private static int[] primes;
+    private static ArrayList<Integer> multiplesOfPrimeFactors;
+    
+    protected static int[] generate(int n) {
+        primes = new int[n];
+        multiplesOfPrimeFactors = new ArrayList<Integer>();
+        set2AsFirstPrime();
+        checkOddNumbersForSubsequentPrimes();
+        return primes;
+    }
+    
+    private static void set2AsFirstPrime() {
+        primes[0] = 2;
+        multiplesOfPrimeFactors.add(2);
+    }
+    
+    private static void checkOddNumbersForSubsequentPrimes() {
+        int primeIndex = 1;
+        for (int candidate = 3; primeIndex < primes.length; candidate += 2) {
+            if (isPrime(candidate))
+                primes[primeIndex++] = candidate;
+        }
+    }
+    
+    private static boolean isPrime(int candidate) {
+        if (isLeastRelevantMultipleOfLargerPrimeFactor(candidate)) {
+            multiplesOfPrimeFactors.add(candidate);
+            return false;
+        }
+        return isNotMultipleOfAnyPreviousPrimeFactor(candidate);
+    }
+    
+    private static boolean isLeastRelevantMultipleOfLargerPrimeFactor(int candidate) {
+        int nextLargerPrimeFactor = primes[multiplesOfPrimeFactors.size()];
+        int leastRelevantMultiple = nextLargerPrimeFactor * nextLargerPrimeFactor;
+        return candidate == leastRelevantMultiple;
+    }
+    
+    private static boolean isNotMultipleOfAnyPreviousPrimeFactor(int candidate) {
+        for (int n = 1; n < multiplesOfPrimeFactors.size(); n++) {
+            if (isMultipleOfNthPrimeFactor(candidate, n))
+                return false;
+        }
+        return true;
+    }
+    
+    private static boolean isMultipleOfNthPrimeFactor(int candidate, int n) {
+        return candidate == smallestOddNthMultipleNotLessThanCandidate(candidate, n);
+    }
+    
+    private static int smallestOddNthMultipleNotLessThanCandidate(int candidate, int n) {
+        int multiple = multiplesOfPrimeFactors.get(n);
+        while (multiple < candidate)
+            multiple += 2 * primes[n];
+        multiplesOfPrimeFactors.set(n, multiple);
+        return multiple;
+    }
+}
+```
 
 Before we dive into this code, I'd encourage everyone reading
 this article to take time to read over the code and draw your own conclusions
@@ -347,38 +356,40 @@ In the chapter I extracted three classes from that function: `PrimePrinter`, `Ro
 
 One of those extracted classes was the `PrimeGenerator`. It had the following code (which I did not publish in the book.)  The variable names and the overall structure are Knuth's.
 
-	public class PrimeGenerator {
-	  protected static int[] generate(int n) {
-	    int[] p = new int[n];
-	    ArrayList<Integer> mult = new ArrayList<Integer>();
-	    p[0] = 2;
-	    mult.add(2);
-	    int k = 1;
-	    for (int j = 3; k < p.length; j += 2) {
-	      boolean jprime = false;
-	      int ord = mult.size();
-	      int square = p[ord] * p[ord];
-	      if (j == square) {
-	        mult.add(j);
-	      } else {
-	        jprime=true;
-	        for (int mi = 1; mi < ord; mi++) {
-	          int m = mult.get(mi);
-	          while (m < j)
-	            m += 2 * p[mi];
-	          mult.set(mi, m);
-	          if (j == m) {
-	            jprime = false;
-	            break;
-	          }
-	        }
-	      }
-	      if (jprime)
-	        p[k++] = j;
-	    }
-	    return p;
-	  }
-	}
+```java
+public class PrimeGenerator {
+    protected static int[] generate(int n) {
+        int[] p = new int[n];
+        ArrayList<Integer> mult = new ArrayList<Integer>();
+        p[0] = 2;
+        mult.add(2);
+        int k = 1;
+        for (int j = 3; k < p.length; j += 2) {
+            boolean jprime = false;
+            int ord = mult.size();
+            int square = p[ord] * p[ord];
+            if (j == square) {
+	            mult.add(j);
+            } else {
+                jprime=true;
+                for (int mi = 1; mi < ord; mi++) {
+                    int m = mult.get(mi);
+                    while (m < j)
+                        m += 2 * p[mi];
+                    mult.set(mi, m);
+                    if (j == m) {
+                        jprime = false;
+                        break;
+                    }
+                }
+            }
+            if (jprime)
+                p[k++] = j;
+        }
+        return p;
+    }
+}
+```
 
 Even though I was done with the lesson of the chapter, I didn't want to leave that method looking so outdated.  So I cleaned it up a bit as an afterthought.  My goal was not to describe how to generate prime numbers.  I wanted my readers to see how large methods, that violate the Single Responsibility Principle, can be broken down into a few smaller well-named classes containing a few smaller well-named methods.
 
@@ -445,14 +456,15 @@ this code will be easiest to understand if it's all together in one place.
 
 I disagree.  Here is `isNotMultipleOfAnyPreviousPrimeFactor`.
 
-	  private static boolean
-	  isNotMultipleOfAnyPreviousPrimeFactor(int candidate) {
-	    for (int n = 1; n < multiplesOfPrimeFactors.size(); n++) {
-	      if (isMultipleOfNthPrimeFactor(candidate, n))
-	        return false;
-	    }
-	    return true;
-	  }
+```java
+private static boolean isNotMultipleOfAnyPreviousPrimeFactor(int candidate) {
+    for (int n = 1; n < multiplesOfPrimeFactors.size(); n++) {
+        if (isMultipleOfNthPrimeFactor(candidate, n))
+            return false;
+    }
+    return true;
+}
+```
 
 If you trust the `isMultipleOfNthPrimeFactor` method, then this method stands alone quite nicely.  I mean we loop through all n previous primes and see if the candidate is a multiple.  That's pretty straight forward.
 
@@ -482,9 +494,11 @@ The side effect buried down in `smallestOddNth...` is a bit more problematic. No
 
 In general, if you trust the names of the methods being called then understanding the caller does not require understanding the callee.  For example:
 
-	for (Employee e : employees)
-	  if (e.shouldPayToday())
-		  e.pay();
+```java
+for (Employee e : employees)
+    if (e.shouldPayToday())
+        e.pay();
+```
 
 This would not be made more understandable if we replaced those two method calls with the their implementations.  Such a replacement would simply obscure the intent.
 
@@ -806,8 +820,10 @@ more effectively. What advantage is there in the approach you advocate?
 
 I like my method names to be sentence fragments that fit nicely with keywords and assignment statements.  It makes the code a bit more natural to read.
 
-	if (isTooHot)
-	  cooler.turnOn();
+```java
+if (isTooHot)
+    cooler.turnOn();
+```
 
 I also follow a simple rule about the length of names.  The larger the scope of a method, the shorter its name should be and vice-versa -- the shorter the scope the longer the  name.  The private methods I extracted in this case live in very small scopes, and so have longish names.  Methods like this are typically called from only one place, so there is no burden on the programmer to remember a long name for another call.
 
@@ -899,7 +915,9 @@ I certainly agree that abstraction is of importance to good software design.  I 
 
 But consider:
 
-	addSongToLibrary(String title, String[] authors, int durationInSeconds);
+```java
+addSongToLibrary(String title, String[] authors, int durationInSeconds);
+```
 
 This seems like a very nice abstraction to me, and I cannot imagine how a comment might improve it.
 
@@ -970,17 +988,17 @@ heads, which makes it harder to work in the code.
 
 Here is my first attempt at a header comment for `isMultiple`:
 
-```
-    /**
-     * Returns true if candidate is a multiple of primes[n], false otherwise.
-     * May modify multiplesOfPrimeFactors[n].
-     * @param candidate
-     *      Number being tested for primality; must be at least as
-     *      large as any value passed to this method in the past.
-     * @param n
-     *      Selects a prime number to test against; must be
-     *      <= multiplesOfPrimeFactors.size().
-     */
+```java
+/**
+ * Returns true if candidate is a multiple of primes[n], false otherwise.
+ * May modify multiplesOfPrimeFactors[n].
+ * @param candidate
+ *      Number being tested for primality; must be at least as
+ *      large as any value passed to this method in the past.
+ * @param n
+ *      Selects a prime number to test against; must be
+ *      <= multiplesOfPrimeFactors.size().
+ */
 ```
 
 What do you think of this?
@@ -1230,72 +1248,73 @@ I mentioned that I ask the students in my software design class to rewrite
 have learned during the discussion, I would now change several of the
 comments, but I have left this in its original form):
 
-	package literatePrimes;
+```java
+package literatePrimes;
 
-	import java.util.ArrayList;
+import java.util.ArrayList;
 
-	public class PrimeGenerator2 {
+public class PrimeGenerator2 {
 
-	    /**
-	     * Computes the first prime numbers; the return value contains the
-	     * computed primes, in increasing order of size.
-	     * @param n
-	     *      How many prime numbers to compute.
-	     */
-	    public static int[] generate(int n) {
-	        int[] primes = new int[n];
+    /**
+     * Computes the first prime numbers; the return value contains the
+     * computed primes, in increasing order of size.
+     * @param n
+     *      How many prime numbers to compute.
+     */
+    public static int[] generate(int n) {
+        int[] primes = new int[n];
 
-	        // Used to test efficiently (without division) whether a candidate
-	        // is a multiple of a previously-encountered prime number. Each entry
-	        // here contains an odd multiple of the corresponding entry in
-	        // primes. Entries increase monotonically.
-	        int[] multiples = new int[n];
+        // Used to test efficiently (without division) whether a candidate
+        // is a multiple of a previously-encountered prime number. Each entry
+        // here contains an odd multiple of the corresponding entry in
+        // primes. Entries increase monotonically.
+        int[] multiples = new int[n];
 
-	        // Index of the last value in multiples that we need to consider
-	        // when testing candidates (all elements after this are greater
-	        // than our current candidate, so they don't need to be considered).
-	        int lastMultiple = 0;
+        // Index of the last value in multiples that we need to consider
+        // when testing candidates (all elements after this are greater
+        // than our current candidate, so they don't need to be considered).
+        int lastMultiple = 0;
 
-	        // Number of valid entries in primes.
-	        int primesFound = 1;
+        // Number of valid entries in primes.
+        int primesFound = 1;
 
-	        primes[0] = 2;
-	        multiples[0] = 4;
+        primes[0] = 2;
+        multiples[0] = 4;
 
-	        // Each iteration through this loop considers one candidate; skip
-	        // the even numbers, since they can't be prime.
-	        candidates: for (int candidate = 3; primesFound < n; candidate += 2) {
-	            if (candidate >= multiples[lastMultiple]) {
-	                lastMultiple++;
-	            }
+        // Each iteration through this loop considers one candidate; skip
+        // the even numbers, since they can't be prime.
+        candidates: for (int candidate = 3; primesFound < n; candidate += 2) {
+            if (candidate >= multiples[lastMultiple]) {
+                lastMultiple++;
+            }
 
-	            // Each iteration of this loop tests the candidate against one
-	            // potential prime factor. Skip the first factor (2) since we
-	            // only consider odd candidates.
-	            for (int i = 1; i <= lastMultiple; i++) {
-	                while (multiples[i] < candidate) {
-	                    multiples[i] += 2*primes[i];
-	                }
-	                if (multiples[i] == candidate) {
-	                    continue candidates;
-	                }
-	            }
-	            primes[primesFound] = candidate;
+            // Each iteration of this loop tests the candidate against one
+            // potential prime factor. Skip the first factor (2) since we
+            // only consider odd candidates.
+            for (int i = 1; i <= lastMultiple; i++) {
+                while (multiples[i] < candidate) {
+                    multiples[i] += 2*primes[i];
+                }
+                if (multiples[i] == candidate) {
+                    continue candidates;
+                }
+            }
+            primes[primesFound] = candidate;
 
-	            // Start with the prime's square here, rather than 3x the prime.
-	            // This saves time and is safe because all of the intervening
-	            // multiples will be detected by smaller prime numbers. As an
-	            // example, consider the prime 7: the value in multiples will
-	            // start at 49; 21 will be ruled out as a multiple of 3, and
-	            // 35 will be ruled out as a multiple of 5, so 49 is the first
-	            // multiple that won't be ruled out by a smaller prime.
-	            multiples[primesFound] = candidate*candidate;
-	            primesFound++;
-	        }
-	        return primes;
-	    }
-	}
-
+            // Start with the prime's square here, rather than 3x the prime.
+            // This saves time and is safe because all of the intervening
+            // multiples will be detected by smaller prime numbers. As an
+            // example, consider the prime 7: the value in multiples will
+            // start at 49; 21 will be ruled out as a multiple of 3, and
+            // 35 will be ruled out as a multiple of 5, so 49 is the first
+            // multiple that won't be ruled out by a smaller prime.
+            multiples[primesFound] = candidate*candidate;
+            primesFound++;
+        }
+        return primes;
+    }
+}
+```
 
 Everyone can read this and decide for themselves whether they think
 it is easier to understand than the original. I'd like to mention a
@@ -1320,31 +1339,39 @@ Figuring that out required a lot of staring at the ceiling, closing my eyes, vis
 
 Among the problems I had were the comments you wrote.  Let's take them one at a time.
 
-	    /**
-	     * Computes the first prime numbers; the return value contains the
-	     * computed primes, in increasing order of size.
-	     * @param n
-	     *      How many prime numbers to compute.
-	     */
-	    public static int[] generate(int n) {
+```java
+/**
+ * Computes the first prime numbers; the return value contains the
+ * computed primes, in increasing order of size.
+ * @param n
+ *      How many prime numbers to compute.
+ */
+public static int[] generate(int n) {
+```
 
 It seems to me that this would be better as:
 
-	public static int[] generateNPrimeNumbers(int n) {
+```java
+public static int[] generateNPrimeNumbers(int n) {
+```
 
 or if you must:
 
-	//Return the first n prime numbers
-	public static int[] generate(int n) {
+```java
+//Return the first n prime numbers
+public static int[] generate(int n) {
+```
 
 I'm not opposed to Javadocs as a rule; but I write them only when absolutely necessary. I also have an aversion for descriptions and `@param` statements that are perfectly obvious from the method signature.
 
 The next comment cost me a good 20 minutes of puzzling things out.
 
-	// Used to test efficiently (without division) whether a candidate
-	// is a multiple of a previously-encountered prime number. Each entry
-	// here contains an odd multiple of the corresponding entry in
-	// primes. Entries increase monotonically.
+```java
+// Used to test efficiently (without division) whether a candidate
+// is a multiple of a previously-encountered prime number. Each entry
+// here contains an odd multiple of the corresponding entry in
+// primes. Entries increase monotonically.
+```
 
 First of all I'm not sure why the "division" statement is necessary.  I'm old school so I expect that everyone knows to avoid division in inner loops if it can be avoided.  But maybe I'm wrong about that...
 
@@ -1366,20 +1393,26 @@ OK, so the `multiples` array is full of odd multiples, except for the first elem
 
 So perhaps that comment should be:
 
-	 // multiples of corresponding prime.
+```java
+// multiples of corresponding prime.
+```
 
 Or perhaps we should change the name of the array to something like `primeMultiples` and drop the comment altogether.
 
 Moving on to the next comment:
 
-	// Each iteration of this loop tests the candidate against one
-	// potential prime factor. Skip the first factor (2) since we
-	// only consider odd candidates.
+```java
+// Each iteration of this loop tests the candidate against one
+// potential prime factor. Skip the first factor (2) since we
+// only consider odd candidates.
+```
 
 That doesn't make a lot of sense.  The code it's talking about is:
 
-	for (int i = 1; i <= lastMultiple; i++) {
-	    while (multiples[i] < candidate) {
+```java
+for (int i = 1; i <= lastMultiple; i++) {
+    while (multiples[i] < candidate) {
+```
 
 The `multiples` array, as we have now learned, is an array of *multiples* of prime numbers.  This loop is not testing the candidate against prime *factors*, it's testing it against the current prime _multiples_.
 
@@ -1387,23 +1420,29 @@ Fortunately for me the third of fourth time I read this comment I realized that 
 
 That left me with one final question.  What the deuce was the reason behind:
 
-	multiples[primesFound] = candidate*candidate;
+```java
+multiples[primesFound] = candidate*candidate;
+```
 
 Why the square?  That makes no sense.  So I changed it to:
 
-	multiples[primesFound] = candidate;
+```java
+multiples[primesFound] = candidate;
+```
 
 And it worked just fine.  So this must be an optimization of some kind.
 
 Your comment to explain this is:
 
-	// Start with the prime's square here, rather than 3x the prime.
-	// This saves time and is safe because all of the intervening
-	// multiples will be detected by smaller prime numbers. As an
-	// example, consider the prime 7: the value in multiples will
-	// start at 49; 21 will be ruled out as a multiple of 3, and
-	// 35 will be ruled out as a multiple of 5, so 49 is the first
-	// multiple that won't be ruled out by a smaller prime.
+```java
+// Start with the prime's square here, rather than 3x the prime.
+// This saves time and is safe because all of the intervening
+// multiples will be detected by smaller prime numbers. As an
+// example, consider the prime 7: the value in multiples will
+// start at 49; 21 will be ruled out as a multiple of 3, and
+// 35 will be ruled out as a multiple of 5, so 49 is the first
+// multiple that won't be ruled out by a smaller prime.
+```
 
 The first few times I read this it made no sense to me at all.  It was just a jumble of numbers.
 
@@ -1482,16 +1521,20 @@ people found it helpful, I would retain it.
 Now let me discuss two few specific comments that you objected to. The
 first comment was the one for the `multiples` variable:
 
-	// Used to test efficiently (without division) whether a candidate
-	// is a multiple of a previously-encountered prime number. Each entry
-	// here contains an odd multiple of the corresponding entry in
-	// primes. Entries increase monotonically.
+```java
+// Used to test efficiently (without division) whether a candidate
+// is a multiple of a previously-encountered prime number. Each entry
+// here contains an odd multiple of the corresponding entry in
+// primes. Entries increase monotonically.
+```
 
 There is a bug in this comment that you exposed (the first entry is not odd);
 good catch! You then argued that most of the information in the comment
 is unnecessary and proposed this as an alternative:
 
-	 // multiples of corresponding prime.
+```java
+// multiples of corresponding prime.
+```
 
 You have left out too much useful information here. For example, I don't think
 it is safe to assume that readers will figure out that the motivation is
@@ -1500,16 +1543,20 @@ motivations clearly so that there will be no confusion. And I think it's
 helpful for readers to know that these entries never decrease.
 I would simply fix the bug, leaving all of the information intact:
 
-	// Used to test efficiently (without division) whether a candidate
-	// is a multiple of a previously-encountered prime number. Each entry
-	// (except the first, which is never used) contains an odd multiple of
-	// the corresponding entry in primes. Entries increase monotonically.
+```java
+// Used to test efficiently (without division) whether a candidate
+// is a multiple of a previously-encountered prime number. Each entry
+// (except the first, which is never used) contains an odd multiple of
+// the corresponding entry in primes. Entries increase monotonically.
+```
 
 The second comment was this one, for the `for` loop:
 
-	// Each iteration of this loop tests the candidate against one
-	// potential prime factor. Skip the first factor (2) since we
-	// only consider odd candidates.
+```java
+// Each iteration of this loop tests the candidate against one
+// potential prime factor. Skip the first factor (2) since we
+// only consider odd candidates.
+```
 
 You objected to this comment because the code of the loop doesn't actually
 test the candidate against the prime factor; it tests it against a multiple.
@@ -1523,9 +1570,11 @@ good comment. Thus I would rewrite this comment to make it clear that
 it describes the abstract function of the code, not its
 precise behavior:
 
-	// Each iteration of this loop considers one existing prime, ruling
-	// out the candidate if it is a multiple of that prime. Skip the
-	// first prime (2) since we only consider odd candidates.
+```java
+// Each iteration of this loop considers one existing prime, ruling
+// out the candidate if it is a multiple of that prime. Skip the
+// first prime (2) since we only consider odd candidates.
+```
 
 To conclude, I agree with your assertion "it is very difficult to explain
 something to someone who is not intimate with the details you are trying
@@ -1548,68 +1597,70 @@ I like this because the implementation of the `generateFirstNPrimes` method desc
 
 I think it is just the reality of this algorithm that the effort required to properly explain it, and the effort required for anyone else to read and understand that explanation is roughly equivalent to the effort needed to read the code and go on a bike ride.
 
-	package literatePrimes;
+```java
+package literatePrimes;
 
-	public class PrimeGenerator3 {
-	    private static int[] primes;
-	    private static int[] primeMultiples;
-	    private static int lastRelevantMultiple;
-	    private static int primesFound;
-	    private static int candidate;
+public class PrimeGenerator3 {
+    private static int[] primes;
+    private static int[] primeMultiples;
+    private static int lastRelevantMultiple;
+    private static int primesFound;
+    private static int candidate;
 
-	    // Lovely little algorithm that finds primes by predicting
-	    // the next composite number and skipping over it. That prediction
-	    // consists of a set of prime multiples that are continuously
-	    // increased to keep pace with the candidate.
+    // Lovely little algorithm that finds primes by predicting
+    // the next composite number and skipping over it. That prediction
+    // consists of a set of prime multiples that are continuously
+    // increased to keep pace with the candidate.
 
-	    public static int[] generateFirstNPrimes(int n) {
-	        initializeTheGenerator(n);
+    public static int[] generateFirstNPrimes(int n) {
+        initializeTheGenerator(n);
 
-	        for (candidate = 5; primesFound < n; candidate += 2) {
-	            increaseEachPrimeMultipleToOrBeyondCandidate();
-	            if (candidateIsNotOneOfThePrimeMultiples()) {
-	                registerTheCandidateAsPrime();
-	            }
-	        }
-	        return primes;
-	    }
+        for (candidate = 5; primesFound < n; candidate += 2) {
+            increaseEachPrimeMultipleToOrBeyondCandidate();
+            if (candidateIsNotOneOfThePrimeMultiples()) {
+                registerTheCandidateAsPrime();
+            }
+        }
+        return primes;
+    }
 
-	    private static void initializeTheGenerator(int n) {
-	        primes = new int[n];
-	        primeMultiples = new int[n];
-	        lastRelevantMultiple = 1;
+    private static void initializeTheGenerator(int n) {
+        primes = new int[n];
+        primeMultiples = new int[n];
+        lastRelevantMultiple = 1;
 
-	        // prime the pump. (Sorry, couldn't resist.)
-	        primesFound = 2;
-	        primes[0] = 2;
-	        primes[1] = 3;
+        // prime the pump. (Sorry, couldn't resist.)
+        primesFound = 2;
+        primes[0] = 2;
+        primes[1] = 3;
 
-	        primeMultiples[0] = -1;// irrelevant
-	        primeMultiples[1] = 9;
-	    }
+        primeMultiples[0] = -1;// irrelevant
+        primeMultiples[1] = 9;
+    }
 
-	    private static void increaseEachPrimeMultipleToOrBeyondCandidate() {
-	        if (candidate >= primeMultiples[lastRelevantMultiple])
-	            lastRelevantMultiple++;
+    private static void increaseEachPrimeMultipleToOrBeyondCandidate() {
+        if (candidate >= primeMultiples[lastRelevantMultiple])
+            lastRelevantMultiple++;
 
-	        for (int i = 1; i <= lastRelevantMultiple; i++)
-	            while (primeMultiples[i] < candidate)
-	                primeMultiples[i] += 2 * primes[i];
-	    }
+        for (int i = 1; i <= lastRelevantMultiple; i++)
+            while (primeMultiples[i] < candidate)
+                primeMultiples[i] += 2 * primes[i];
+    }
 
-	    private static boolean candidateIsNotOneOfThePrimeMultiples() {
-	        for (int i = 1; i <= lastRelevantMultiple; i++)
-	            if (primeMultiples[i] == candidate)
-	                return false;
-	        return true;
-	    }
+    private static boolean candidateIsNotOneOfThePrimeMultiples() {
+        for (int i = 1; i <= lastRelevantMultiple; i++)
+            if (primeMultiples[i] == candidate)
+                return false;
+        return true;
+    }
 
-	    private static void registerTheCandidateAsPrime() {
-	        primes[primesFound] = candidate;
-	        primeMultiples[primesFound] = candidate * candidate;
-	        primesFound++;
-	    }
-	}
+    private static void registerTheCandidateAsPrime() {
+        primes[primesFound] = candidate;
+        primeMultiples[primesFound] = candidate * candidate;
+        primesFound++;
+    }
+}
+```
 
 **JOHN:**
 
@@ -1685,28 +1736,30 @@ level.
 
 Good catch!  I would have caught that too had I thought to profile the solution.  You are right that separating the two loops added some unecessary iteration.  I found a nice way to solve that problem without using the horrible `continue`.  My updated version is now faster than yours!  A million primes in 440ms as opposed to yours which takes 561ms.  ;-) Below are just the changes.
 
-	  public static int[] generateFirstNPrimes(int n) {
-	    initializeTheGenerator(n);
+```java
+public static int[] generateFirstNPrimes(int n) {
+    initializeTheGenerator(n);
+    
+    for (candidate = 5; primesFound < n; candidate += 2)
+        if (candidateIsPrime())
+            registerTheCandidateAsPrime();
+    
+    return primes;
+}
 
-	    for (candidate = 5; primesFound < n; candidate += 2)
-	      if (candidateIsPrime())
-	        registerTheCandidateAsPrime();
+private static boolean candidateIsPrime() {
+    if (candidate >= primeMultiples[lastRelevantMultiple])
+        lastRelevantMultiple++;
 
-	    return primes;
-	  }
-
-	  private static boolean candidateIsPrime() {
-	    if (candidate >= primeMultiples[lastRelevantMultiple])
-	      lastRelevantMultiple++;
-
-	    for (int i = 1; i <= lastRelevantMultiple; i++) {
-	      while (primeMultiples[i] < candidate)
-	        primeMultiples[i] += 2 * primes[i];
-	      if (primeMultiples[i] == candidate)
-	        return false;
-	    }
-	    return true;
-	  }
+    for (int i = 1; i <= lastRelevantMultiple; i++) {
+        while (primeMultiples[i] < candidate)
+            primeMultiples[i] += 2 * primes[i];
+        if (primeMultiples[i] == candidate)
+            return false;
+    }
+    return true;
+}
+```
 
 **JOHN:**
 
