@@ -1733,7 +1733,7 @@ As I said at the start I have carefully read _A Philosophy of Software Design_. 
 
 So I was surprised to find, on page 157, that you wrote a very short, dismissive, pejorative, and inaccurate section on _Test Driven Development_.  Sorry for all the adjectives, but I think that's a fair characterization.  So my goal, here, is to correct the misconceptions that led you to write the following:
 
->"Test-driven development is an approach to software development where programmers write unit tests before they write code.  When creating a new class, the develper first writes unit tests for the class, based on its expected behavior.  None of these tests pass, since there is no code for the class.  Then the developer works through the tests one at a time, writing enough code for that test to pass.  When all of the tests pass, the class is finished."
+>"Test-driven development is an approach to software development where programmers write unit tests before they write code.  When creating a new class, the developer first writes unit tests for the class, based on its expected behavior.  None of these tests pass, since there is no code for the class.  Then the developer works through the tests one at a time, writing enough code for that test to pass.  When all of the tests pass, the class is finished."
 
 This is just wrong.  TDD is quite considerably different from what you describe.  I describe it using three laws.
 
