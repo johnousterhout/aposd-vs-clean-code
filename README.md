@@ -144,7 +144,7 @@ Unfortunately the One Thing approach will lead to over-decomposition:
 
 **UB:**
 
-Let me tackle the last thing first.  You suggested that locking the thread, and preforming a critical section should be together in the same method.  However, I would be tempted to separate the locking from the critical section.
+Let me tackle the last thing first.  You suggested that locking the thread, and performing a critical section should be together in the same method.  However, I would be tempted to separate the locking from the critical section.
 
 ```java
 void concurrentOperation() {
