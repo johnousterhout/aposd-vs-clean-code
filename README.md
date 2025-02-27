@@ -1074,7 +1074,7 @@ result in misunderstanding and more bugs.
 Well, I guess I've just been burned more than you have.  I've gone down too many false comment induced rabbit holes, and wasted too much time on worthless word salads.
 
 Of course my trust in comments is not a binary thing.  I read them if they are there; but
-I don't implicitly trust then.  The more gratuitous I feel the author was, or the less adept at english the author is, the less I trust the comments.
+I don't implicitly trust them.  The more gratuitous I feel the author was, or the less adept at english the author is, the less I trust the comments.
 
 As I said above, our IDEs tend to paint comments in an ignorable color.  I have my IDE paint comments in bright fire engine red because when I write a comment I intend for it to be read.
 
