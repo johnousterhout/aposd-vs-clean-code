@@ -784,7 +784,7 @@ In general, however, the commenting style I used in Listing 4-8 is more appropri
 I disagree that adding comments would have distracted from your point,
 and I think Listing 4-8 is also woefully undercommented.
 But let's not argue about either of those issues. Instead, let's discuss
-what comments the PrimeGenerator code *should* have if it were used in production.
+what comments the `PrimeGenerator` code *should* have if it were used in production.
 I will make some suggestions, and you can agree or disagree.
 
 For starters, let's discuss your use of megasyllabic names like
