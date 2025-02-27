@@ -777,7 +777,7 @@ in that code; does this seem appropriate to you?
 
 I think it was appropriate for the purpose for which I wrote it. It was an adjunct to the lesson that very large methods can be broken down into smaller classes containing smaller methods. Adding lots of explanatory comments would have detracted from that point.
 
-In general, however, the commenting style I used in Listing 4-8 is more appropriate.  That listing, at the very end of the *Comments* chapter, describes yet another `PrimeGenertor` with a slightly different algorithm, and a better set of comments.
+In general, however, the commenting style I used in Listing 4-8 is more appropriate.  That listing, at the very end of the *Comments* chapter, describes yet another `PrimeGenerator` with a slightly different algorithm, and a better set of comments.
 
 **JOHN:**
 
