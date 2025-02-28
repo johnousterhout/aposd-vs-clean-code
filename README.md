@@ -1416,7 +1416,7 @@ for (int i = 1; i <= lastMultiple; i++) {
 
 The `multiples` array, as we have now learned, is an array of *multiples* of prime numbers.  This loop is not testing the candidate against prime *factors*, it's testing it against the current prime _multiples_.
 
-Fortunately for me the third of fourth time I read this comment I realized that you really meant to use the word "multiples".  But the only way for me to know that was to understand the algorithm.  And when I understand the algorithm, why do I need the comment?
+Fortunately for me the third or fourth time I read this comment I realized that you really meant to use the word "multiples".  But the only way for me to know that was to understand the algorithm.  And when I understand the algorithm, why do I need the comment?
 
 That left me with one final question.  What the deuce was the reason behind:
 
