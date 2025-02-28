@@ -2175,7 +2175,7 @@ Here is my attempt to summarize our thoughts on Test-Driven Development:
 They allow developers to make significant changes to a system without fear
 of breaking something.
 
-* We agree that it is possible use TDD to produce systems with good designs.
+* We agree that it is possible to use TDD to produce systems with good designs.
 
 * I believe that TDD discourages good design and can easily lead to very bad
 code. You do not believe that TDD discourages good
