@@ -1178,7 +1178,7 @@ your readers as many clues as possible, you'd include a lot more comments.
 
 **UB:**
 
-I stand by the picture as far as it's accuracy is concerned.  And I think it
+I stand by the picture as far as its accuracy is concerned.  And I think it
 makes a good crosscheck.  I have no illusions that it is easy to understand.
 
 This algorithm is challenging and will require work to comprehend.  I finally
@@ -1775,7 +1775,7 @@ Development. I am a huge fan of unit testing. I believe that unit tests are
 an indispensable part of the software development process and pay for
 themselves over and over. I think we agree on this.
 
-However, I am not fan of Test-Driven Development (TDD), which dictates
+However, I am not a fan of Test-Driven Development (TDD), which dictates
 that tests must be written before code and that code must be written
 and tested in tiny increments. This approach has serious problems
 without any compensating advantages that I have been able to identify.
@@ -1847,6 +1847,7 @@ To start our discussion, can you make a list of the advantages you
 think that TDD provides over the approach I just described?
 
 **UB:**
+
 The advantages I usually attribute to TDD are:
 
 * Very little need for debugging.  After all, if you just saw everything working a minute or two ago, there's not much to debug.
