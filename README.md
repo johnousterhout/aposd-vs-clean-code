@@ -1,8 +1,16 @@
+# A Philosophy of Software Design vs Clean Code
+
+## Forward
+
 *(This document is the result of a series of discussions, some online and
 some in person, held between Robert "Uncle Bob" Martin and John Ousterhout between
 September 2024 and February 2025. If you would like to comment on anything
 in this discussion, we recommend that you do so on the [Google group
 associated with APOSD](https://groups.google.com/g/software-design-book))*
+
+### Related Links
+
+- [Follow-up Discussion with John Ousterhout and Robert Martin on the Book Overflow Podcast](https://www.youtube.com/watch?v=3Vlk6hCWBw0)
 
 ## Introductions
 
