@@ -4,6 +4,19 @@ September 2024 and February 2025. If you would like to comment on anything
 in this discussion, we recommend that you do so on the [Google group
 associated with APOSD](https://groups.google.com/g/software-design-book))*
 
+## Discussion Sections
+
+- [Method Length](#method-length)
+  - [Method Length Summary](#method-length-summary)
+- [Comments](#comments)
+  - [Comments Summary](#comments-summary)
+- [John's Rewrite of PrimeGenerator](#johns-rewrite-of-primegenerator)
+  - [A Tale of Two Programmers](#a-tale-of-two-programmers)
+- [Bob's Rewrite of PrimeGenerator2](#bobs-rewrite-of-primegenerator2)
+- [Test-Driven Development](#test-driven-development)
+  - [TDD Summary](#tdd-summary)
+- [Closing Remarks](#closing-remarks)
+
 ## Introductions
 
 **JOHN:**
