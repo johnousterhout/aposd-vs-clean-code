@@ -16,7 +16,7 @@ agreeing to discuss those differences here.
 
 **UB:**
 
-My pleasure John.  Before we begin, let me say that I've carefully read through your book and I found it very enjoyable, and full of valuable insights.  There are some things I disagree with you on, such as TDD, and Abstraction-First incrementalism, but overall I enjoyed it a lot.
+My pleasure John.  Before we begin let me say that I've carefully read through your book and I found it very enjoyable, and full of valuable insights.  There are some things I disagree with you on, such as TDD, and Abstraction-First incrementalism, but overall I enjoyed it a lot.
 
 **JOHN:**
 
@@ -567,7 +567,7 @@ Is there some benefit to having so many methods that I have missed?
 
 **UB:**
 
-I think you and I are just going to disagree on this.  In general, I believe in the principle of small well-named methods and the separation of concerns. Generally speaking if you can break a large method into several well-named smaller methods with different concerns, and by doing so expose their interfaces, and the high level functional decomposition, then that's a good thing.
+I think you and I are just going to disagree on this.  In general I believe in the principle of small well-named methods and the separation of concerns. Generally speaking if you can break a large method into several well-named smaller methods with different concerns, and by doing so expose their interfaces, and the high level functional decomposition, then that's a good thing.
 
 * Looping over the odd numbers is one concern.
 * Determining primality is another.
@@ -901,7 +901,7 @@ that omits unimportant details." The most obvious example of an abstraction
 is a method. It should be possible to use a method without reading its code.
 The way we achieve this is by writing a header comment that describes
 the method's *interface* (all the information someone needs in order
-to invoke the method). If the method is well-designed, the interface will be
+to invoke the method). If the method is well designed, the interface will be
 much simpler than the code of the method (it omits implementation details),
 so the comments reduce the amount of information people must have in
 their heads.
@@ -1373,7 +1373,7 @@ The next comment cost me a good 20 minutes of puzzling things out.
 // primes. Entries increase monotonically.
 ```
 
-First of all I'm not sure why the "division" statement is necessary.  I'm old school, so I expect that everyone knows to avoid division in inner loops if it can be avoided.  But maybe I'm wrong about that...
+First of all I'm not sure why the "division" statement is necessary.  I'm old school so I expect that everyone knows to avoid division in inner loops if it can be avoided.  But maybe I'm wrong about that...
 
 Also, the *Sieve of Eratosthenes* does not do division, and is a lot easier to understand *and explain* than this algorithm.  So why this particular algorithm?  I think Knuth was trying to save _memory_ -- and in 1982 saving memory was important.  This algorithm uses a lot less memory than the sieve.
 
@@ -1452,7 +1452,7 @@ Suddenly it all made sense. I realized that the `multiples` array was the equiva
 
 That explanation makes perfect sense to me -- now, but I'd be willing to bet that those who are reading it are puzzling over it.  The idea is just hard to explain.
 
-Finally, I went back to your comment and could see what you were saying.
+Finally I went back to your comment and could see what you were saying.
 
 ### A Tale of Two Programmers
 
@@ -1566,7 +1566,7 @@ to say *what* the code is doing in a logical sense, not *how* it does it.
 In that sense, the comment is correct.
 
 However, if a comment causes confusion in the reader, then it is not a
-good comment. Thus, I would rewrite this comment to make it clear that
+good comment. Thus I would rewrite this comment to make it clear that
 it describes the abstract function of the code, not its
 precise behavior:
 
@@ -1918,7 +1918,7 @@ First, let me address the four advantages you listed for TDD:
 	>**UB:** Our experiences differ.
 
 * Enabling fearless refactoring? BINGO! This is the where almost all of the
-  benefits from unit testing come from, and it is a really, really big deal.
+  benefits from unit testing come from, and it is a really really big deal.
 
 	>**UB:** Agreed.
 
