@@ -278,7 +278,7 @@ import java.util.ArrayList;
 public class PrimeGenerator {
     private static int[] primes;
     private static ArrayList<Integer> multiplesOfPrimeFactors;
-    
+
     protected static int[] generate(int n) {
         primes = new int[n];
         multiplesOfPrimeFactors = new ArrayList<Integer>();
@@ -286,12 +286,12 @@ public class PrimeGenerator {
         checkOddNumbersForSubsequentPrimes();
         return primes;
     }
-    
+
     private static void set2AsFirstPrime() {
         primes[0] = 2;
         multiplesOfPrimeFactors.add(2);
     }
-    
+
     private static void checkOddNumbersForSubsequentPrimes() {
         int primeIndex = 1;
         for (int candidate = 3; primeIndex < primes.length; candidate += 2) {
@@ -299,7 +299,7 @@ public class PrimeGenerator {
                 primes[primeIndex++] = candidate;
         }
     }
-    
+
     private static boolean isPrime(int candidate) {
         if (isLeastRelevantMultipleOfLargerPrimeFactor(candidate)) {
             multiplesOfPrimeFactors.add(candidate);
@@ -307,13 +307,13 @@ public class PrimeGenerator {
         }
         return isNotMultipleOfAnyPreviousPrimeFactor(candidate);
     }
-    
+
     private static boolean isLeastRelevantMultipleOfLargerPrimeFactor(int candidate) {
         int nextLargerPrimeFactor = primes[multiplesOfPrimeFactors.size()];
         int leastRelevantMultiple = nextLargerPrimeFactor * nextLargerPrimeFactor;
         return candidate == leastRelevantMultiple;
     }
-    
+
     private static boolean isNotMultipleOfAnyPreviousPrimeFactor(int candidate) {
         for (int n = 1; n < multiplesOfPrimeFactors.size(); n++) {
             if (isMultipleOfNthPrimeFactor(candidate, n))
@@ -321,11 +321,11 @@ public class PrimeGenerator {
         }
         return true;
     }
-    
+
     private static boolean isMultipleOfNthPrimeFactor(int candidate, int n) {
         return candidate == smallestOddNthMultipleNotLessThanCandidate(candidate, n);
     }
-    
+
     private static int smallestOddNthMultipleNotLessThanCandidate(int candidate, int n) {
         int multiple = multiplesOfPrimeFactors.get(n);
         while (multiple < candidate)
@@ -1739,11 +1739,11 @@ Good catch!  I would have caught that too had I thought to profile the solution.
 ```java
 public static int[] generateFirstNPrimes(int n) {
     initializeTheGenerator(n);
-    
+
     for (candidate = 5; primesFound < n; candidate += 2)
         if (candidateIsPrime())
             registerTheCandidateAsPrime();
-    
+
     return primes;
 }
 
