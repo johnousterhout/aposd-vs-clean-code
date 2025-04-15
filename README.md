@@ -1,6 +1,6 @@
 *(This document is the result of a series of discussions, some online and
 some in person, held between Robert "Uncle Bob" Martin and John Ousterhout between
-September, 2024 and February, 2025. If you would like to comment on anything
+September 2024 and February 2025. If you would like to comment on anything
 in this discussion, we recommend that you do so on the [Google group
 associated with APOSD](https://groups.google.com/g/software-design-book))*
 
@@ -16,7 +16,7 @@ agreeing to discuss those differences here.
 
 **UB:**
 
-My pleasure John.  Before we begin let me say that I've carefully read through your book and I found it very enjoyable, and full of valuable insights.  There are some things I disagree with you on, such as TDD, and Abstraction-First incrementalism, but overall I enjoyed it a lot.
+My pleasure John.  Before we begin, let me say that I've carefully read through your book and I found it very enjoyable, and full of valuable insights.  There are some things I disagree with you on, such as TDD, and Abstraction-First incrementalism, but overall I enjoyed it a lot.
 
 **JOHN:**
 
@@ -134,7 +134,7 @@ The strategy that I use for deciding how far to take decomposition is the old ru
 
 **JOHN:**
 
-Unfortunately the One Thing approach will lead to over-decompositon:
+Unfortunately the One Thing approach will lead to over-decomposition:
 
  1. The term "one thing" is vague and easy to abuse. For example, if a method has two lines of code, isn't it doing two things?
 
@@ -144,7 +144,7 @@ Unfortunately the One Thing approach will lead to over-decompositon:
 
 **UB:**
 
-Let me tackle the last thing first.  You suggested that locking the thread, and preforming a critical section should be together in the same method.  However, I would be tempted to separate the locking from the critical section.
+Let me tackle the last thing first.  You suggested that locking the thread, and performing a critical section should be together in the same method.  However, I would be tempted to separate the locking from the critical section.
 
 ```java
 void concurrentOperation() {
@@ -154,7 +154,7 @@ void concurrentOperation() {
 }
 ```
 
-This decouples the critical section from the lock and allows it to be called at times when locking isn't necessary (e.g. in single thread mode) or when the a lock has already been set by someone else.
+This decouples the critical section from the lock and allows it to be called at times when locking isn't necessary (e.g. in single thread mode) or when a lock has already been set by someone else.
 
 Now, on to the "ease of abuse" argument.  I don't consider that to be a significant concern. `If` statements are easy to abuse.  `Switch` statements are easy to abuse.  Assignment statements are easy to abuse.  The fact that something is easy to abuse does not mean that it should be avoided or suppressed.  It simply means people should take appropriate care. There will always be this thing called: _judgment_.
 
@@ -179,7 +179,7 @@ void clearTotalPoints() {
 }
 ```
 
-However it may be good judgement to extract them as follows because the interface is abstract, and the implemention has deeper detail.
+However, it may be good judgement to extract them as follows because the interface is abstract, and the implementation has deeper detail.
 
 ```java
 void clearTotals() {
@@ -500,7 +500,7 @@ for (Employee e : employees)
         e.pay();
 ```
 
-This would not be made more understandable if we replaced those two method calls with the their implementations.  Such a replacement would simply obscure the intent.
+This would not be made more understandable if we replaced those two method calls with their implementations.  Such a replacement would simply obscure the intent.
 
 **JOHN:**
 
@@ -567,13 +567,13 @@ Is there some benefit to having so many methods that I have missed?
 
 **UB:**
 
-I think you and I are just going to disagree on this.  In general I believe in the principle of small well-named methods and the separation of concerns. Generally speaking if you can break a large method into several well-named smaller methods with different concerns, and by doing so expose their interfaces, and the high level functional decomposition, then that's a good thing.
+I think you and I are just going to disagree on this.  In general, I believe in the principle of small well-named methods and the separation of concerns. Generally speaking if you can break a large method into several well-named smaller methods with different concerns, and by doing so expose their interfaces, and the high level functional decomposition, then that's a good thing.
 
 * Looping over the odd numbers is one concern.
 * Determining primality is another.
 * Marking off the multiples of primes is yet another.
 
-It seems to me that separating and naming those concerns helps to expose the way the algorithm works -- even at the expense of some entaglement.
+It seems to me that separating and naming those concerns helps to expose the way the algorithm works -- even at the expense of some entanglement.
 
 In your solution, which we are soon to see below, you break the algorithm up in a similar way.  However, instead of separating the concerns into functions, you separate them into sections with comments above them.
 
@@ -704,7 +704,7 @@ put it.
 
 **UB:**
 
-It's very true that there is important information that is not, or cannot be, expresssed in code.  That's a failure.  A failure of our languages, or of our ability to use them to express ourselves.  In every case a comment is a failure of our ability to use our languages to express our intent.
+It's very true that there is important information that is not, or cannot be, expressed in code.  That's a failure.  A failure of our languages, or of our ability to use them to express ourselves.  In every case a comment is a failure of our ability to use our languages to express our intent.
 
 And we fail at that very frequently, and so comments are a necessary evil -- or, if you prefer, _an unfortunate necessity_.  If we had the perfect programming language (TM) we would never write another comment.
 
@@ -755,7 +755,7 @@ commented.
 
 You and I have had some very different experiences.
 
-I have certainly been helped by well placed comments.  I have also, just as certainly, (and within this very document) been distracted and confused by a comment that was incorrect, misplaced, gratuitous, or otherwise just plain bad.
+I have certainly been helped by well-placed comments.  I have also, just as certainly, (and within this very document) been distracted and confused by a comment that was incorrect, misplaced, gratuitous, or otherwise just plain bad.
 
 **JOHN:**
 
@@ -777,15 +777,15 @@ in that code; does this seem appropriate to you?
 
 I think it was appropriate for the purpose for which I wrote it. It was an adjunct to the lesson that very large methods can be broken down into smaller classes containing smaller methods. Adding lots of explanatory comments would have detracted from that point.
 
-In general, however, the commenting style I used in Listing 4-8 is more appropriate.  That listing, at the very end of the *Comments* chapter, describes yet another `PrimeGenertor` with a slightly different algorithm, and a better set of comments.
+In general, however, the commenting style I used in Listing 4-8 is more appropriate.  That listing, at the very end of the *Comments* chapter, describes yet another `PrimeGenerator` with a slightly different algorithm, and a better set of comments.
 
 **JOHN:**
 
 I disagree that adding comments would have distracted from your point,
 and I think Listing 4-8 is also woefully undercommented.
 But let's not argue about either of those issues. Instead, let's discuss
-what comments the PrimeGenerator code *should* have if it were used in production.
-I will make some suggestions and you can agree or disagree.
+what comments the `PrimeGenerator` code *should* have if it were used in production.
+I will make some suggestions, and you can agree or disagree.
 
 For starters, let's discuss your use of megasyllabic names like
 `isLeastRelevantMultipleOfLargerPrimeFactor`.  My understanding is that
@@ -799,7 +799,7 @@ comments into code. To me, this approach is problematic:
   also awkward to read: my mind wants to parse every syllable every time
   I read it, which slows me down. Notice that both you and I resorted to
   abbreviating names in this discussion: that's an indication that
-  the long names are awkward and unhepful.
+  the long names are awkward and unhelpful.
 * The names are hard to parse and don't convey information as effectively
   as a comment.
   When students read `PrimeGenerator` one of the first things they
@@ -825,7 +825,7 @@ if (isTooHot)
     cooler.turnOn();
 ```
 
-I also follow a simple rule about the length of names.  The larger the scope of a method, the shorter its name should be and vice-versa -- the shorter the scope the longer the  name.  The private methods I extracted in this case live in very small scopes, and so have longish names.  Methods like this are typically called from only one place, so there is no burden on the programmer to remember a long name for another call.
+I also follow a simple rule about the length of names.  The larger the scope of a method, the shorter its name should be and vice versa -- the shorter the scope the longer the  name.  The private methods I extracted in this case live in very small scopes, and so have longish names.  Methods like this are typically called from only one place, so there is no burden on the programmer to remember a long name for another call.
 
 **JOHN:**
 
@@ -871,7 +871,7 @@ Fair enough.  As for the meaning of "leastRelevant", that's a much larger proble
 
 **JOHN:**
 
-You still haven't answererd my question: why is it better to use super-long names
+You still haven't answered my question: why is it better to use super-long names
 rather than shorter names augmented with descriptive comments?
 
 **UB:**
@@ -901,7 +901,7 @@ that omits unimportant details." The most obvious example of an abstraction
 is a method. It should be possible to use a method without reading its code.
 The way we achieve this is by writing a header comment that describes
 the method's *interface* (all the information someone needs in order
-to invoke the method). If the method is well designed, the interface will be
+to invoke the method). If the method is well-designed, the interface will be
 much simpler than the code of the method (it omits implementation details),
 so the comments reduce the amount of information people must have in
 their heads.
@@ -911,7 +911,7 @@ their heads.
 Long ago, in a 1995 book, I defined abstraction as:
 >*The amplification of the essential and the elimination of the irrelevant.*
 
-I certainly agree that abstraction is of importance to good software design.  I also agree that well placed comments can enhance the ability of readers to understand the abstractions we are attempting to employ.  I disagree that comments are the _only_, or even the _best_, way to understand those abstractions.  But sometimes they are the only option.
+I certainly agree that abstraction is of importance to good software design.  I also agree that well-placed comments can enhance the ability of readers to understand the abstractions we are attempting to employ.  I disagree that comments are the _only_, or even the _best_, way to understand those abstractions.  But sometimes they are the only option.
 
 But consider:
 
@@ -1074,11 +1074,11 @@ result in misunderstanding and more bugs.
 Well, I guess I've just been burned more than you have.  I've gone down too many false comment induced rabbit holes, and wasted too much time on worthless word salads.
 
 Of course my trust in comments is not a binary thing.  I read them if they are there; but
-I don't implicitly trust then.  The more gratuitous I feel the author was, or the less adept at english the author is, the less I trust the comments.
+I don't implicitly trust them.  The more gratuitous I feel the author was, or the less adept at english the author is, the less I trust the comments.
 
 As I said above, our IDEs tend to paint comments in an ignorable color.  I have my IDE paint comments in bright fire engine red because when I write a comment I intend for it to be read.
 
-By the same token I use long names as a subsitute for comments because I intend for those long names to be read; and it is very hard for a programmer to ignore names.
+By the same token I use long names as a substitute for comments because I intend for those long names to be read; and it is very hard for a programmer to ignore names.
 
 **JOHN:**
 
@@ -1099,7 +1099,7 @@ arises because it is designed to compute primes efficiently:
   to skip the intervening odd multiples? Furthermore, it might seem that this
   optimization only has a small impact on performance, but in fact it makes an
   *enormous* difference (orders of magnitude). Using the square has the
-  side-effect that when
+  side effect that when
   testing a candidate, only primes up to the square root of the
   candidate are tested. If 3x were used as the initial multiple, primes
   within a factor of 3 of the candidate would be tested; that's a *lot*
@@ -1121,7 +1121,7 @@ two issues?
 
 **UB:**
 
-I agree that the algorithm is subtle.  Setting the first prime multiple as the square of the prime was deeply mysterious at first.  I had to go on an hour long bike ride to understand it.
+I agree that the algorithm is subtle.  Setting the first prime multiple as the square of the prime was deeply mysterious at first.  I had to go on an hour-long bike ride to understand it.
 
 Would a comment help?  Perhaps.  However, my guess is that no one who has been reading our conversation has been helped by it, because you and I are now too intimate with the solution.  You and I can talk about that solution using words that fit into that intimacy; but our readers likely do not yet enjoy that fit.
 
@@ -1178,7 +1178,7 @@ your readers as many clues as possible, you'd include a lot more comments.
 
 **UB:**
 
-I stand by the picture as far as it's accuracy is concerned.  And I think it
+I stand by the picture as far as its accuracy is concerned.  And I think it
 makes a good crosscheck.  I have no illusions that it is easy to understand.
 
 This algorithm is challenging and will require work to comprehend.  I finally
@@ -1190,7 +1190,7 @@ someone willing to do the work to understand it.
 **JOHN:**
 
 Let's wrap up this section of the discussion. Here is my summary of
-where we agree and disgree.
+where we agree and disagree.
 
 * Our overall views of comments are fundamentally different. I see more
 value in comments than you do, and I believe that they play a fundamental
@@ -1373,7 +1373,7 @@ The next comment cost me a good 20 minutes of puzzling things out.
 // primes. Entries increase monotonically.
 ```
 
-First of all I'm not sure why the "division" statement is necessary.  I'm old school so I expect that everyone knows to avoid division in inner loops if it can be avoided.  But maybe I'm wrong about that...
+First of all I'm not sure why the "division" statement is necessary.  I'm old school, so I expect that everyone knows to avoid division in inner loops if it can be avoided.  But maybe I'm wrong about that...
 
 Also, the *Sieve of Eratosthenes* does not do division, and is a lot easier to understand *and explain* than this algorithm.  So why this particular algorithm?  I think Knuth was trying to save _memory_ -- and in 1982 saving memory was important.  This algorithm uses a lot less memory than the sieve.
 
@@ -1389,7 +1389,7 @@ I hadn't yet worked out what the `multiples` array was.  So I thought it was per
 
 It was only when I got to `multiples[primesFound] = candidate*candidate;` that I started to question things.  If the `candidate` is prime, shouldn't `prime*prime` be odd in every case beyond 2?  I had to do the math in my head to prove that.  (2n+1)(2n+1) = 4n^2+4n+1 ... Yeah, that's odd.
 
-OK, so the `multiples` array is full of odd multiples, except for the first element, since it will be muliples of 2.
+OK, so the `multiples` array is full of odd multiples, except for the first element, since it will be multiples of 2.
 
 So perhaps that comment should be:
 
@@ -1416,7 +1416,7 @@ for (int i = 1; i <= lastMultiple; i++) {
 
 The `multiples` array, as we have now learned, is an array of *multiples* of prime numbers.  This loop is not testing the candidate against prime *factors*, it's testing it against the current prime _multiples_.
 
-Fortunately for me the third of fourth time I read this comment I realized that you really meant to use the word "multiples".  But the only way for me to know that was to understand the algorithm.  And when I understand the algorithm, why do I need the comment?
+Fortunately for me the third or fourth time I read this comment I realized that you really meant to use the word "multiples".  But the only way for me to know that was to understand the algorithm.  And when I understand the algorithm, why do I need the comment?
 
 That left me with one final question.  What the deuce was the reason behind:
 
@@ -1452,7 +1452,7 @@ Suddenly it all made sense. I realized that the `multiples` array was the equiva
 
 That explanation makes perfect sense to me -- now, but I'd be willing to bet that those who are reading it are puzzling over it.  The idea is just hard to explain.
 
-Finally I went back to your comment and could see what you were saying.
+Finally, I went back to your comment and could see what you were saying.
 
 ### A Tale of Two Programmers
 
@@ -1518,7 +1518,7 @@ who have a more positive view of comments in general, and get
 their input. As long as the comment is not misleading and at least a few
 people found it helpful, I would retain it.
 
-Now let me discuss two few specific comments that you objected to. The
+Now let me discuss two specific comments that you objected to. The
 first comment was the one for the `multiples` variable:
 
 ```java
@@ -1566,7 +1566,7 @@ to say *what* the code is doing in a logical sense, not *how* it does it.
 In that sense, the comment is correct.
 
 However, if a comment causes confusion in the reader, then it is not a
-good comment. Thus I would rewrite this comment to make it clear that
+good comment. Thus, I would rewrite this comment to make it clear that
 it describes the abstract function of the code, not its
 precise behavior:
 
@@ -1734,7 +1734,7 @@ level.
 
 **UB:**
 
-Good catch!  I would have caught that too had I thought to profile the solution.  You are right that separating the two loops added some unecessary iteration.  I found a nice way to solve that problem without using the horrible `continue`.  My updated version is now faster than yours!  A million primes in 440ms as opposed to yours which takes 561ms.  ;-) Below are just the changes.
+Good catch!  I would have caught that too had I thought to profile the solution.  You are right that separating the two loops added some unnecessary iteration.  I found a nice way to solve that problem without using the horrible `continue`.  My updated version is now faster than yours!  A million primes in 440ms as opposed to yours which takes 561ms.  ;-) Below are just the changes.
 
 ```java
 public static int[] generateFirstNPrimes(int n) {
@@ -1775,7 +1775,7 @@ Development. I am a huge fan of unit testing. I believe that unit tests are
 an indispensable part of the software development process and pay for
 themselves over and over. I think we agree on this.
 
-However, I am not fan of Test-Driven Development (TDD), which dictates
+However, I am not a fan of Test-Driven Development (TDD), which dictates
 that tests must be written before code and that code must be written
 and tested in tiny increments. This approach has serious problems
 without any compensating advantages that I have been able to identify.
@@ -1798,7 +1798,7 @@ This is just wrong.  TDD is quite considerably different from what you describe.
 
 A little thought will convince you that these three laws will lock you into a cycle that is just a few seconds long.  You'll write a line or two of a test that will fail, you'll write a line or two of production code that will pass, around and around every few seconds.
 
-A second layer of TDD is the Red-Green-Refactor loop.  This loop is several minutes long.  It is comprised of a few cycles of the three laws, followed by a period of reflection and refactoring.  During that reflection we pull back from the intimacy of the quick cycle and look at the design of the code we've just written.  Is it clean?  Is it well structured?  Is there a better approach?  Does it match the design we are pursuing?  If not, should it?
+A second layer of TDD is the Red-Green-Refactor loop.  This loop is several minutes long.  It is comprised of a few cycles of the three laws, followed by a period of reflection and refactoring.  During that reflection we pull back from the intimacy of the quick cycle and look at the design of the code we've just written.  Is it clean?  Is it well-structured?  Is there a better approach?  Does it match the design we are pursuing?  If not, should it?
 
 **JOHN:**
 
@@ -1847,6 +1847,7 @@ To start our discussion, can you make a list of the advantages you
 think that TDD provides over the approach I just described?
 
 **UB:**
+
 The advantages I usually attribute to TDD are:
 
 * Very little need for debugging.  After all, if you just saw everything working a minute or two ago, there's not much to debug.
@@ -1917,7 +1918,7 @@ First, let me address the four advantages you listed for TDD:
 	>**UB:** Our experiences differ.
 
 * Enabling fearless refactoring? BINGO! This is the where almost all of the
-  benefits from unit testing come from, and it is a really really big deal.
+  benefits from unit testing come from, and it is a really, really big deal.
 
 	>**UB:** Agreed.
 
@@ -1948,10 +1949,10 @@ own judgment. For example, if I am writing a method that requires
 multiple iterations of the TDD loop, should I refactor after every iteration
 (which sounds pretty tedious) or wait until after several iterations so that
 I can look at a bigger chunk of code when refactoring and hence be more
-strategic? Without guidance it will be tempting for developers to keep
+strategic? Without guidance, it will be tempting for developers to keep
 putting off refactoring.
 
-TDD is similar to the One Thing Rule we discsused earlier in that it is
+TDD is similar to the One Thing Rule we discussed earlier in that it is
 biased: it provides very strong and clear instructions pushing developers
 in one direction (in this case, acting tactically) with only vague
 guidance in the other direction (designing more strategically). As a result,
@@ -1991,7 +1992,7 @@ I'll address your points one at a time.
 
 * I haven't found that the scale of TDD is so tactical that it discourages thinking.  Every programmer, regardless of their testing discipline, writes code one line at a time.  That's immensely tactical and yet does not discourage design.  So why would one test at a time discourage it?
 
-* The literature on TDD strongly discourages delaying refactoring.  While thinking about design is strongly encouraged.  Both are integral parts of the discipline..
+* The literature on TDD strongly discourages delaying refactoring.  While thinking about design is strongly encouraged.  Both are integral parts of the discipline.
 
 * We all write bad code at the start.  The discipline of TDD gives us the opportunity, and the safety, to continuously clean it.  Design insights arise from those kinds of cleaning activities.  The discipline of refactoring allows bad designs to be transformed, one step at a time, into better designs.
 
@@ -2018,7 +2019,7 @@ design never occurs (perhaps you don't even view this as a serious risk?).
 
 **UB:**
 
-I usually use an abbeviated form of UML to capture my early design decisions.  I have no objection to capturing them in pseudo-code, or even real code.  However, I would not commit any such pre-written code.  I would likely hold it in a text file, and consult it while following the TDD cycle.  I might feel safe enough to copy and paste from the text file into my IDE in order to make a failing test pass.
+I usually use an abbreviated form of UML to capture my early design decisions.  I have no objection to capturing them in pseudocode, or even real code.  However, I would not commit any such pre-written code.  I would likely hold it in a text file, and consult it while following the TDD cycle.  I might feel safe enough to copy and paste from the text file into my IDE in order to make a failing test pass.
 
 The Bowling game is an example of how wildly our initial design decisions can  deviate from our eventual solutions.  It's true that introductory videos often do not expose the depth of a discipline.
 
@@ -2043,7 +2044,7 @@ that's why it needs to be the center of attention.
 
 TDD is a coding discipline.  Of course design comes before coding -- I don't know anyone who thinks otherwise.  Even the Bowling Game video made that point. But, as we saw in the Bowling Game video, sometimes the code will take you in a very different direction.
 
-That difference does't imply that the design shouldn't have been done.  It just implies that designs are speculative and may not aways survive reality.
+That difference doesn't imply that the design shouldn't have been done.  It just implies that designs are speculative and may not always survive reality.
 
 As Eisenhower once said:
 >“In preparing for battle I have always found that plans are useless, but planning is indispensable.”
@@ -2086,7 +2087,7 @@ On the other hand, I have a lot of experience with tactical programming,
 and I know that it rarely ends well.
 TDD is one of the most extreme forms of tactical programming I've
 encountered.
-In general, if "making it work" is the #1 prority, instead of
+In general, if "making it work" is the #1 priority, instead of
 "develop a clean design", code turns to spaghetti.
 I don't see enough safeguards in your approach to TDD
 to prevent the disaster scenarios; I don't even see a clear
@@ -2175,7 +2176,7 @@ Here is my attempt to summarize our thoughts on Test-Driven Development:
 They allow developers to make significant changes to a system without fear
 of breaking something.
 
-* We agree that it is possible use TDD to produce systems with good designs.
+* We agree that it is possible to use TDD to produce systems with good designs.
 
 * I believe that TDD discourages good design and can easily lead to very bad
 code. You do not believe that TDD discourages good
