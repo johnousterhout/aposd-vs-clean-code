@@ -1,8 +1,16 @@
+# A Philosophy of Software Design vs Clean Code
+
 *(This document is the result of a series of discussions, some online and
 some in person, held between Robert "Uncle Bob" Martin and John Ousterhout between
-September 2024 and February 2025. If you would like to comment on anything
-in this discussion, we recommend that you do so on the [Google group
-associated with APOSD](https://groups.google.com/g/software-design-book))*
+September 2024 and February 2025)*
+
+### Related Links
+
+- [Follow-up Discussion with John Ousterhout and Robert Martin on the Book Overflow Podcast](https://www.youtube.com/watch?v=3Vlk6hCWBw0)
+- [A Philosophy of Software Design, 2nd Edition](https://www.amazon.com/Philosophy-Software-Design-2nd/dp/173210221X/ref=sr_1_1?crid=2PJESX6I2UD3P&dib=eyJ2IjoiMSJ9.thuonFC3GnLB3dGZfHxZouPlGJSnG8JgzY5jidDbqQ-vxc2E3pp_pQ6qNjfMeH4g.axorxCrE0L4EvLtaCoWxrqXhHVgFtqWHj_gkR4G3Y8c&dib_tag=se&keywords=a+philosophy+of+software+design+by+john+ousterhout&qid=1744752659&sprefix=a+philosophy+of+software%2Caps%2C152&sr=8-1),
+  by John Ousterhout
+- [Clean Code: A Handbook of Agile Software Craftsmanship](https://www.amazon.com/Clean-Code-Handbook-Software-Craftsmanship/dp/0132350882),
+  by Robert C. Martin
 
 ## Introductions
 
